@@ -23,6 +23,7 @@ def main():
 		if args.file is not None:
 		    cap = cv2.VideoCapture(args.file)
 		else:
+		    # cap = cv2.VideoCapture('http://192.168.43.1:8080/video')
 		    cap = cv2.VideoCapture(args.cam_id)
 		# cap.set(3, args.cam_width)
 		# cap.set(4, args.cam_height)
