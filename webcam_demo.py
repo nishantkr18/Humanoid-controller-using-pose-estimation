@@ -20,10 +20,10 @@ def main():
 		model_cfg, model_outputs = posenet.load_model(args.model, sess)
 		output_stride = model_cfg['output_stride']
 
-		if args.file is not None:
-		    cap = cv2.VideoCapture(args.file)
-		else:
-		    cap = cv2.VideoCapture('http://192.168.43.1:8080/video')
+		# if args.file is not None:
+		#     cap = cv2.VideoCapture(args.file)
+		# else:
+		cap = cv2.VideoCapture(0)
 		    # cap = cv2.VideoCapture(args.cam_id)
 		# cap.set(3, args.cam_width)
 		# cap.set(4, args.cam_height)
