@@ -1,4 +1,4 @@
-import pybullet as p
+import pybullet
 import cv2
 import pybullet_data
 import os
@@ -10,46 +10,43 @@ import inspect
 currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 
 file_name = currentdir + "/humanoid.urdf"
-p.connect(p.GUI)
-p.setAdditionalSearchPath(pybullet_data.getDataPath())
-p.loadURDF("plane.urdf", 0, 0, 0)
-robot = p.loadURDF(file_name, 0, 0, 1)
-# p.resetBasePositionAndOrientation(robot, 0, 0, 1)
+pybullet.connect(pybullet.GUI)
+pybullet.setAdditionalSearchPath(pybullet_data.getDataPath())
+pybullet.loadURDF("plane.urdf", 0, 0, 0)
+robot = pybullet.loadURDF(file_name, 0, 0, 0.5)
 cap = cv2.VideoCapture(0)
-p.setGravity(0, 0, -10)
-while True:
-    _, image = cap.read()
-    hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
-    red1_l = np.array([75, 50, 100])
-    red1_u = np.array([90, 255, 255])
-    mask = cv2.inRange(hsv, red1_l, red1_u)
-    masked_img = cv2.bitwise_and(hsv, hsv, mask=mask)
-    cv2.imshow("img", masked_img)
-    cnt_green, im2 = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-    present = 0
-    for c_red in cnt_green:
-        area = cv2.contourArea(c_red)
-        if area > 2:
-            present = 1
-            print("there")
+pybullet.setGravity(0, 0, 0)
+numJoints = pybullet.getNumJoints(robot)  # 25
+action = [i for i in range(numJoints)]
 
-    if present == 1:
-        targetVel = 10
-        for joint in range(2, 6):
-            p.setJointMotorControl2(
-                robot, joint, p.VELOCITY_CONTROL, targetVelocity=targetVel, force=5000
-            )
-    else:
-        targetVel = 0
-        for joint in range(2, 6):
-            p.setJointMotorControl2(
-                robot, joint, p.VELOCITY_CONTROL, targetVelocity=targetVel, force=500
-            )
-    p.stepSimulation()
+scale = 100.0
 
+
+def nothing(x):
+    pass
+
+
+cv2.namedWindow("controller with scale" + str(scale))
+# create trackbars for joints
+for i in range(numJoints):
+    cv2.createTrackbar(str(i), "controller with scale" + str(scale), 00, 100, nothing)
+# create switch for ON/OFF functionality
+switch = "0 : OFF \n1 : ON"
+cv2.createTrackbar(switch, "controller with scale" + str(scale), 0, 1, nothing)
+
+while 1:
     if cv2.waitKey(1) & 0xFF == ord("q"):
         break
-cap.release()
-cv2.destroyAllWindows()
+    actions = [
+        cv2.getTrackbarPos(str(i), "controller with scale" + str(scale)) / scale
+        for i in range(numJoints)
+    ]
+    s = cv2.getTrackbarPos(switch, "controller with scale" + str(scale))
+    for i in range(numJoints):
+        pybullet.setJointMotorControl2(
+            robot, i, pybullet.POSITION_CONTROL, targetPosition=actions[i], force=500
+        )
+    pybullet.stepSimulation()
 
-# p.stepSimulation()
+
+cv2.destroyAllWindows()

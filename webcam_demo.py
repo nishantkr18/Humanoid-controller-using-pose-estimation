@@ -59,17 +59,18 @@ def main():
 			frame_count += 1
 			if cv2.waitKey(1) & 0xFF == ord('q'):
 				break
-			y_coord = int(keypoint_coords[0][10][0])
-			x_coord = int(keypoint_coords[0][10][1])
-			aspect_ratio_of_hand = 0.9
-			ht = 60
-			wd = int(ht*aspect_ratio_of_hand)
-			xt = [x_coord-wd,x_coord+wd]
-			yt = [y_coord-2*ht,y_coord]
-			if(xt[0]>0 and xt[1]<640 and yt[0]>0 and yt[1]<480):
-				# print(y_coord,x_coord)
-				cv2.imshow('hello', overlay_image[yt[0]:yt[1],xt[0]:xt[1]])
-				
+			print(keypoint_coords)
+			# x_coord = int(keypoint_coords[0][10][1])
+			# aspect_ratio_of_hand = 0.9
+			# ht = 60
+			# wd = int(ht*aspect_ratio_of_hand)
+			# xt = [x_coord-wd,x_coord+wd]
+			# yt = [y_coord-2*ht,y_coord]
+			# if(xt[0]>0 and xt[1]<640 and yt[0]>0 and yt[1]<480):
+			# 	# print(y_coord,x_coord)
+			# 	cv2.imshow('hello', overlay_image[yt[0]:yt[1],xt[0]:xt[1]])
+
+			# # FOR FRAMERATE COUNT
 			# if(frame_count%20==0):
 			# 	print(input_image.shape, output_scale)
 			# 	print('Average FPS: ', frame_count / (time.time() - start))
