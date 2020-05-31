@@ -1,4 +1,4 @@
-import pybullet
+import pybullet as p
 import cv2
 import pybullet_data
 import os
@@ -10,13 +10,13 @@ import inspect
 currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 
 file_name = currentdir + "/humanoid.urdf"
-pybullet.connect(pybullet.GUI)
-pybullet.setAdditionalSearchPath(pybullet_data.getDataPath())
-pybullet.loadURDF("plane.urdf", 0, 0, 0)
-robot = pybullet.loadURDF(file_name, 0, 0, 0.5)
+p.connect(p.GUI)
+p.setAdditionalSearchPath(pybullet_data.getDataPath())
+p.loadURDF("plane.urdf", 0, 0, 0)
+robot = p.loadURDF(file_name, 0, 0, 0.5)
 cap = cv2.VideoCapture(0)
-pybullet.setGravity(0, 0, 0)
-numJoints = pybullet.getNumJoints(robot)  # 25
+p.setGravity(0, 0, 0)
+numJoints = p.getNumJoints(robot)  # 25
 action = [i for i in range(numJoints)]
 
 scale = 100.0
@@ -43,10 +43,10 @@ while 1:
     ]
     s = cv2.getTrackbarPos(switch, "controller with scale" + str(scale))
     for i in range(numJoints):
-        pybullet.setJointMotorControl2(
-            robot, i, pybullet.POSITION_CONTROL, targetPosition=actions[i], force=500
+        p.setJointMotorControl2(
+            robot, i, p.POSITION_CONTROL, targetPosition=actions[i], force=500
         )
-    pybullet.stepSimulation()
+    p.stepSimulation()
 
 
 cv2.destroyAllWindows()
