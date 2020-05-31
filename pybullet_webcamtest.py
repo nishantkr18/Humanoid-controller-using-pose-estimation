@@ -5,13 +5,17 @@ import os
 import time
 import math
 import numpy as np
+import inspect
 
-file_name = "humanoid.urdf"
+currentdir = os.path.dirname(os.path.abspath(
+    inspect.getfile(inspect.currentframe())))
+
+file_name = currentdir+"/humanoid.urdf"
+print(file_name)
 p.connect(p.GUI)
 p.setAdditionalSearchPath(pybullet_data.getDataPath())
 p.loadURDF( "plane.urdf", 0, 0, 0)
-# robot = p.loadURDF(file_name,[0,0,1])
-husky = p.loadURDF("husky/husky.urdf", 0, 0, 0.1)
+robot = p.loadURDF(file_name,0,0,1)
 # p.resetBasePositionAndOrientation(robot, 0, 0, 1)
 cap=cv2.VideoCapture(0)
 p.setGravity(0, 0, -10)
@@ -34,11 +38,11 @@ while True:
 	if (present==1):
 		targetVel = 10
 		for joint in range(2, 6):
-			p.setJointMotorControl2(husky, joint, p.VELOCITY_CONTROL, targetVelocity =targetVel,force = 5000)
+			p.setJointMotorControl2(robot, joint, p.VELOCITY_CONTROL, targetVelocity =targetVel,force = 5000)
 	else:		
 		targetVel = 0
 		for joint in range(2, 6):
-			p.setJointMotorControl2(husky, joint, p.VELOCITY_CONTROL, targetVelocity =targetVel,force = 500)
+			p.setJointMotorControl2(robot, joint, p.VELOCITY_CONTROL, targetVelocity =targetVel,force = 500)
 	p.stepSimulation()			
 			
 	if cv2.waitKey(1) & 0xFF == ord('q'):
