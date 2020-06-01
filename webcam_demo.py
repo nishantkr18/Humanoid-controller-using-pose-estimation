@@ -23,7 +23,7 @@ def main():
 		# if args.file is not None:
 		#     cap = cv2.VideoCapture(args.file)
 		# else:
-		cap = cv2.VideoCapture(0)
+		cap = cv2.VideoCapture('test_s.mp4')
 		    # cap = cv2.VideoCapture(args.cam_id)
 		# cap.set(3, args.cam_width)
 		# cap.set(4, args.cam_height)
@@ -54,7 +54,7 @@ def main():
 			overlay_image = posenet.draw_skel_and_kp(
 			    display_image, pose_scores, keypoint_scores, keypoint_coords,
 			    min_pose_score=0.15, min_part_score=0.1)
-
+			overlay_image=cv2.resize(overlay_image,(640,480))
 			cv2.imshow('posenet', overlay_image)
 			frame_count += 1
 			if cv2.waitKey(1) & 0xFF == ord('q'):
