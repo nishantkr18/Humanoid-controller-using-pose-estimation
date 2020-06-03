@@ -34,9 +34,9 @@ while True:
 			print("there")
 	p.setJointMotorControl2(robot, 17, p.POSITION_CONTROL, targetPosition =1.57,force = 500)
 	p.setJointMotorControl2(robot, 19, p.POSITION_CONTROL, targetPosition =-1.57,force = 500)
-	joint=18
+	joint=5
 	if (present==1):
-		targetpos=targetpos+0.1
+		targetpos=targetpos-0.1
 		# for joint in range(2, 6):
 		p.setJointMotorControl2(robot, joint, p.POSITION_CONTROL, targetPosition =targetpos,force = 500)
 	else:		

@@ -99,10 +99,18 @@ def main():
 			r_wrist=keypoint_coords[0][10]
 			l_hip=keypoint_coords[0][11]
 			r_hip=keypoint_coords[0][12]
+			l_knee=keypoint_coords[0][13]
+			r_knee=keypoint_coords[0][14]
 			angle_l_elbow=get_angle(l_shoulder,l_elbow,l_wrist)
 			angle_l_shoulder=(get_angle(l_elbow,l_shoulder,l_hip))
 			angle_r_elbow=get_angle(r_shoulder,r_elbow,r_wrist)
 			angle_r_shoulder=(get_angle(r_elbow,r_shoulder,r_hip))
+			angle_l_leg=get_angle(l_knee,l_hip,l_shoulder)
+			angle_r_leg=get_angle(r_knee,r_hip,r_shoulder)
+			if angle_r_leg>90:
+				angle_r_leg=np.abs(180-angle_r_leg)
+			if angle_l_leg>90:
+				angle_l_leg=np.abs(180-angle_l_leg)
 			# print(angle_l_shoulder)
 			# print(get_angle(l_shoulder,l_elbow,l_wrist))
 			# print(angle_l_elbow)
@@ -110,23 +118,30 @@ def main():
 			l_shoulder_position=(90-angle_l_shoulder)*3.141/180
 			l_elbow_joint=20
 			l_shoulder_joint=18
-			p.setJointMotorControl2(robot, 17, p.POSITION_CONTROL, targetPosition =1.57,force = 500)
-			p.setJointMotorControl2(robot, 19, p.POSITION_CONTROL, targetPosition =-1.57,force = 500)
-			p.setJointMotorControl2(robot, l_elbow_joint, p.POSITION_CONTROL, targetPosition =-1*l_elbow_position,force = 5000)
-			p.setJointMotorControl2(robot, l_shoulder_joint, p.POSITION_CONTROL, targetPosition =l_shoulder_position,force = 5000)
+			r_elbow_joint=24
+			r_shoulder_joint=22
+			l_leg_upper_joint=5
+			r_leg_upper_joint=0
+			print(angle_l_leg,"left legggg")
+			# print(angle_r_leg,"right leggg")
 			if (angle_r_elbow>180):
 				angle_r_elbow=180-angle_r_elbow
 			r_elbow_position=(180-angle_r_elbow)*3.141/180
 			r_shoulder_position=(90-angle_r_shoulder)*3.141/180
-			print(angle_r_elbow)
-			# print(r_shoulder_position)
-			r_elbow_joint=24
-			r_shoulder_joint=22
+			l_leg_position=angle_l_leg*3.141/180.0*-1
+			r_leg_position=angle_r_leg*3.141/180.0
+
+			p.setJointMotorControl2(robot, 17, p.POSITION_CONTROL, targetPosition =1.57,force = 500)
+			p.setJointMotorControl2(robot, 19, p.POSITION_CONTROL, targetPosition =-1.57,force = 500)
+			p.setJointMotorControl2(robot, l_elbow_joint, p.POSITION_CONTROL, targetPosition =-1*l_elbow_position,force = 5000)
+			p.setJointMotorControl2(robot, l_shoulder_joint, p.POSITION_CONTROL, targetPosition =l_shoulder_position,force = 5000)
+
 			p.setJointMotorControl2(robot, 21, p.POSITION_CONTROL, targetPosition =1.57,force = 500)
 			p.setJointMotorControl2(robot, 23, p.POSITION_CONTROL, targetPosition =-1.57,force = 500)
 			p.setJointMotorControl2(robot, r_elbow_joint, p.POSITION_CONTROL, targetPosition =3.141-r_elbow_position,force = 5000)
 			p.setJointMotorControl2(robot, r_shoulder_joint, p.POSITION_CONTROL, targetPosition =r_shoulder_position,force = 5000)
-
+			p.setJointMotorControl2(robot,r_leg_upper_joint,p.POSITION_CONTROL,targetPosition=r_leg_position,force=5000)
+			p.setJointMotorControl2(robot,l_leg_upper_joint,p.POSITION_CONTROL,targetPosition=l_leg_position,force=5000)
 			p.stepSimulation()
 
 			# x_coord = int(keypoint_coords[0][10][1])

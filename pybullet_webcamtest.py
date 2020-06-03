@@ -28,7 +28,7 @@ def nothing(x):
 print(numJoints,"joints")
 cv2.namedWindow("controller with scale" + str(scale),cv2.WINDOW_NORMAL)
 # create trackbars for joints
-for i in range(20,25):
+for i in range(0,5):
     cv2.createTrackbar(str(i), "controller with scale" + str(scale), 00, 100, nothing)
 # create switch for ON/OFF functionality
 switch = "0 : OFF \n1 : ON"
