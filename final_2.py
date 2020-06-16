@@ -110,6 +110,25 @@ def get_angle2(point1,middle_point,point2):
 		angle=180+angle
 	return angle
 
+def get_angleh(pointa,middle_point0):
+	point1=np.copy(pointa)
+	middle_point=np.copy(middle_point0)
+	point1[0]=point1[0]-middle_point[0]
+	point1[1]=point1[1]-middle_point[1]
+
+	tan_t1=(point1[1])/(point1[0])
+	# tan_angle=(tan_t1-tan_t2)/(1+tan_t1*tan_t2)
+
+	# print(theta1*180.0/3.141,"theta1")
+	# print(theta2*180.0/3.141,"theta2")
+	# angle=np.abs(theta2-theta1)
+	angle=math.atan(tan_t1)
+	angle=angle*180.0/3.141
+	# if angle<0:
+	# 	angle=90+angle
+	# else :
+	# 	angle=90-angle
+	return angle
 
 def main():
 	with tf.compat.v1.Session() as sess:
@@ -177,11 +196,13 @@ def main():
 			angle_l_shoulder=(get_angle2(l_elbow,l_shoulder,l_hip))
 			angle_l_leg=get_angle2(l_knee,l_hip,l_shoulder)
 			angle_r_leg=get_angle2(r_knee,r_hip,r_shoulder)
+			angle_h=get_angleh((l_shoulder+r_shoulder)/2.0,(l_hip+r_hip)/2.0)
+			# print(angle_h)
 			if angle_r_leg>90:
 				angle_r_leg=np.abs(180-angle_r_leg)
 			if angle_l_leg>90:
 				angle_l_leg=np.abs(180-angle_l_leg)
-			print(angle_r_shoulder,"right",c_r_e)
+			# print(angle_r_shoulder,"right",c_r_e)
 			# print(get_angle(l_shoulder,l_elbow,l_wrist))
 			# print(angle_l_elbow,"left",c_l_e)
 			l_elbow_position=(angle_l_elbow)*3.141/180
@@ -200,6 +221,7 @@ def main():
 			r_shoulder_position=(90-angle_r_shoulder)*3.141/180
 			l_leg_position=angle_l_leg*3.141/180.0*-1
 			r_leg_position=angle_r_leg*3.141/180.0
+			h_position=angle_h*3.141/180.0
 
 			p.setJointMotorControl2(robot, 17, p.POSITION_CONTROL, targetPosition =1.57,force = 500)
 			if c_l_e >=0:
@@ -222,6 +244,7 @@ def main():
 				
 
 			p.setJointMotorControl2(robot, 21, p.POSITION_CONTROL, targetPosition =1.57,force = 500)
+			p.setJointMotorControl2(robot, 11, p.POSITION_CONTROL, targetPosition =h_position,force = 500)
 			# p.setJointMotorControl2(robot, 23, p.POSITION_CONTROL, targetPosition =-1.57,force = 500)
 			# p.setJointMotorControl2(robot, r_elbow_joint, p.POSITION_CONTROL, targetPosition =3.141-r_elbow_position,force = 500)
 			p.setJointMotorControl2(robot, r_shoulder_joint, p.POSITION_CONTROL, targetPosition =r_shoulder_position,force = 500)
