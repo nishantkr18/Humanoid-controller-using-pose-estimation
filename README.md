@@ -7,4 +7,4 @@ Requirements:
 * numpy
 * OpenCV
 
-Run the [final_2.py](https://github.com/nishantkr18/Humanoid-controller-using-pose-estimation/blob/master/final_2.py) file to see the final implementation of the project.
+Download the repository and run the [final_2.py](https://github.com/nishantkr18/Humanoid-controller-using-pose-estimation/blob/master/final_2.py) file to see the final implementation of the project.
