@@ -33,7 +33,7 @@ scipy==1.4.1
 six==1.14.0
 tabulate==0.8.7
 tensorboard==1.14.0
-tensorflow==1.15.2
+tensorflow==2.3.1
 tensorflow-estimator==1.14.0
 tensorpack==0.10.1
 termcolor==1.1.0
